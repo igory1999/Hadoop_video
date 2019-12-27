@@ -1,0 +1,167 @@
+\section{Spark on midway cluster}
+\subsection{sinteractive}
+\begin{frame}[fragile]
+  \frametitle{Spark on midway cluster: sinteractive}
+  \begin{itemize}
+  \item So far we have seen:
+    \begin{itemize}
+    \item How to submit Spark job to a local node with {\color{mycolorcli}spark-submit} or {\color{mycolorcli}spark-sql}
+    \item How to run pyspark locally in python interpreter
+    \item How to run pyspark locally in jupyter notebook
+    \end{itemize}
+  \item If you are doing some heavy computations on login nodes your jobs might get killed since login nodes are not meant for it
+  \item Instead you might want to grab a compute node and do the same processing there. For example:
+    {\color{mycolorcli}
+\begin{verbatim}
+sinteractive -p broadwl --exclusive --time=3:00:00
+\end{verbatim}
+    }
+  \item The above will give you all the cores (28) and memory (64G) on one compute node from broadwl partition for 3 hours and would allow you to work interactively.
+  \item You can even run jupyter notebook on the compute nodes. For more details, see References section.
+\end{itemize}
+\end{frame}
+
+\subsection{Lab7 sbatch}
+\subsubsection{Single node in batch}
+\begin{frame}[fragile]
+  \frametitle{Spark on midway cluster: Lab 7: single node in batch}
+  \begin{itemize}
+  \item If you want to submit your job to a queue and run it on a single node instead of working interactively, create a batch file, {\color{mycolorcli}single.batch}
+    {\color{mycolorcli}
+\begin{verbatim}
+#!/bin/bash
+
+#SBATCH --job-name=single
+#SBATCH --exclusive
+#SBATCH --nodes=1
+#SBATCH --time=00:10:00
+#SBATCH --partition=broadwl
+#SBATCH --output=single_%j.out
+#SBATCH --error=single_%j.err
+####SBATCH --account=rcc-guest
+
+module load spark/2.3.0
+export MASTER="local[*]"
+spark-submit --master $MASTER perceptron.py
+\end{verbatim}
+    }
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Spark on midway cluster: Lab 7: single node in batch}
+  \begin{itemize}
+  \item Notice: we are reusing perceptron example from Lab 5.
+  \item To submit a job to midway
+    {\color{mycolorcli}
+\begin{verbatim}
+sbatch single.batch
+\end{verbatim}
+    }
+  \item To monitor the job, use
+    {\color{mycolorcli}
+\begin{verbatim}
+squeue -j <jobid>
+\end{verbatim}
+    }
+    or
+    {\color{mycolorcli}
+\begin{verbatim}
+squeue -u <username>
+\end{verbatim}
+    }
+  \item To cancel the job
+    {\color{mycolorcli}
+\begin{verbatim}
+scancel <jobid>
+\end{verbatim}
+    }
+  \end{itemize}
+\end{frame}
+
+
+\subsubsection{Multiple nodes in batch}
+\begin{frame}[fragile]
+  \frametitle{Spark on midway cluster: Lab 7: multiple nodes in batch}
+  \begin{itemize}
+  \item If you want to take advantage of using multiple nodes, 
+    you have to start master Spark server on one node and slave Spark servers on the other nodes, 
+    possibly including the master node. Slaves should know the address of the master.
+  \item The job is submitted to the master Spark server. 
+  \item To automate this procedure, {\color{mycolorcli}start-spark-slurm.sh} 
+    and {\color{mycolorcli}stop-spark-slurm.sh} scripts are used.
+{\color{mycolorcli}
+\begin{verbatim}
+...
+module load spark/2.3.0
+
+start-spark-slurm.sh
+
+export MASTER=spark://$HOSTNAME:7077
+spark-submit --master $MASTER perceptron.py
+
+stop-spark-slurm.sh
+\end{verbatim}
+}
+
+  \end{itemize}
+
+
+\end{frame}
+
+
+\section{Spark on Hadoop cluster}
+\subsection{Batch}
+\begin{frame}[fragile]
+  \frametitle{Spark on Hadoop cluster: batch}
+  \begin{itemize}
+  \item To submit a job to a Hadoop cluster you simply need to use 
+    {\color{mycolorcli}\verb|spark2-submit --master yarn <your program>.py|} on
+    the login node of the Hadoop cluster
+  \item Hadoop takes care of distributing the job across the nodes. You can overwrite default number of executors
+    in command line arguments to {\color{mycolorcli}\verb|spark-submit|}
+  \item Under Hadoop, Spark expects its input in HDFS and puts the output into HDFS
+    if you use I/O-related command on RDD or DataFrame. You can still get input from local file system
+    by using the full path with {\color{mycolorcli}\verb|file:///|} in front.
+  \item To run {\color{mycolorcli}\verb|perceptron.py|} from Lab 7 inside Hadoop:
+    {\color{mycolorcli}
+\begin{verbatim}
+hdfs dfs -put data
+make hadoop
+\end{verbatim}
+    }
+  \end{itemize}
+\end{frame}
+
+\subsection{Jupyter}
+\begin{frame}[fragile]
+  \frametitle{Spark on Hadoop cluster: jupyter}
+\begin{itemize}
+\item Point your browser to
+{\color{mycolorcli}
+\begin{verbatim}
+https://hadoop.rcc.uchicago.edu/
+\end{verbatim}
+}
+\item Login using your midway credentials.
+\item Browse into {\color{mycolorcli}\verb|Spark/labs/3|} and open {\color{mycolorcli}\verb|lab3.ipynb|}
+\item Change the kernel to {\color{mycolorcli}\verb|pySpark 2.2.0|}: \verb|Kernel -> Change Kernel -> pySpark 2.2.0|
+\item One can execute a cell in the notebook with Shift+Enter.
+\item The main thing to remember: unless you shut down the notebook, it continues running and using Hadoop resources even if you
+  close the browser and turn off your computer!!! As a result, the next user might not be able to get access to Spark either
+  from jupyter or even in batch. This happens especially often at the end of the semester when students are doing the final project.
+  There is a script running killing pyspark jobs that have been running for more than 3 hours.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Spark on Hadoop cluster: jupyter}
+
+Two ways to shut down a jupyter notebook:
+
+\begin{itemize}
+\item When inside the notebook: \verb|File -> Close and Halt|
+\item When in the file browser outside of the notebook: select ``Running'' tab and press the yellow ``Shutdown'' button near
+  any running notebook.
+\end{itemize}
+\end{frame}

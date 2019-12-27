@@ -1,0 +1,83 @@
+\section{RDD}
+
+\begin{frame}[fragile]
+  \frametitle{RDD}
+  
+  \begin{itemize}
+  \item RDD - collection of records partitioned across the nodes and can be operated on in parallel
+  \item RDD can be created from files in various supported formats or by transforming other RDDs
+  \item One can ask Spark to {\color{mycolordef}cache RDD in memory or disk} for fast reuse
+  \item RDDs automatically recover from node failure
+  \item RDD supports two types of operations:
+    \begin{itemize}
+    \item {\color{mycolordef}Transformations} - create a new dataset from an existing one. Lazy evaluation - evaluated only when required by action.
+    \item {\color{mycolordef}Actions} - return a value to the driver program after running a computation on the dataset.
+    \end{itemize}
+  \end{itemize}  
+
+\end{frame}
+
+\subsection{Transformations}
+\begin{frame}
+  \frametitle{RDD: transformations}
+  Examples of RDD transformations:
+  \begin{itemize}
+  \item {\color{mycolorcode}map(func)} - transform each element by a applying a function
+  \item {\color{mycolorcode}filter(func)} - select records satisfying boolean function
+  \item {\color{mycolorcode}sample(withReplacement, fraction, seed)} - Sample a fraction fraction of the data, with or without replacement, using a given random number generator seed.
+  \item {\color{mycolorcode}union(otherDataset), intersection(otherDataset)}
+  \item {\color{mycolorcode}distinct([numTasks]))}
+  \item {\color{mycolorcode}groupByKey([numTasks])}
+  \item {\color{mycolorcode}sortByKey([ascending], [numTasks])}
+  \item {\color{mycolorcode}pipe(command, [envVars])}
+  \end{itemize}
+\end{frame}
+
+\subsection{Actions}
+\begin{frame}[fragile]
+  \frametitle{RDD: actions}
+  Examples of RDD actions:
+  \begin{itemize}
+  \item {\color{mycolorcode}reduce(func)} - Aggregate the elements of the dataset using a function func (which takes two arguments and returns one). 
+    The function should be commutative and associative so that it can be computed correctly in parallel.
+  \item {\color{mycolorcode}collect()} - Return all the elements of the dataset as an array at the driver program.
+  \item {\color{mycolorcode}count()}
+  \item {\color{mycolorcode}take(n)} - Return first n elements of the results
+  \item {\color{mycolorcode}countByKey()} - Only available on RDDs of type (K, V). Returns a hashmap of (K, Int) pairs with the count of each key.
+  \item {\color{mycolorcode}foreach(func)} - Run a function func on each element of the dataset. 
+    This is usually done for side effects such as updating an accumulator variable (see below) or interacting with external storage systems.
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Lab 1}
+\begin{frame}[fragile]
+  \frametitle{RDD: Lab 1}
+{\color{mycolorcode}
+\begin{verbatim}
+from pyspark import SparkContext, SparkConf
+
+conf = SparkConf()
+sc = SparkContext(conf=conf)
+
+print(sc)
+inputData = sc.textFile("inputFile").cache()
+print(type(inputData))
+
+numAs = inputData.filter(lambda s: 'a' in s).count()
+numBs = inputData.filter(lambda s: 'b' in s).count()
+
+print("Lines with a: %i, lines with b: %i" % (numAs, numBs))
+\end{verbatim}
+}
+
+To run it:
+{\color{mycolorcli}
+\begin{verbatim}
+make rdd
+\end{verbatim}
+}
+
+\end{frame}
+
+

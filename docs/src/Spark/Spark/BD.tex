@@ -1,0 +1,92 @@
+\section{BigDL}
+
+\begin{frame}[fragile]
+  \frametitle{BigDL}
+  \begin{itemize}
+  \item {\color{mycolordef}BigDL} is a library for Deep Learning from Intel
+  \item It is fully integrated with Spark and can work directly with RDDs
+  \item While MLlib has some machine learning algorithms, 
+    including fully connected Neural Networks, it does not currently implement Deep Learning models
+  \item BigDL runs on CPU only and relies on MKL for multithreading
+  \item The installation of python version of BigDL is as simple as 
+    {\color{mycolorcli}
+\begin{verbatim}
+pip install BigDL
+\end{verbatim}
+    }
+  \item BigDL API appears to be very similar to Keras
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Lab 8}
+\begin{frame}[fragile]
+  \frametitle{BigDL: Lab 8}
+  \begin{itemize}
+  \item In this lab we use the models supplied with BigDL
+  \item {\color{mycolorcli}\verb|local_lenet.py|} is a standalone (no Spark) 
+    BigDL program to train LeNet model for handwritten digits recognition
+  \item Run it on a single compute node with
+    {\color{mycolorcli}
+\begin{verbatim}
+make lenet_local
+\end{verbatim}
+    }
+  \item {\color{mycolorcli}lenet5.py} is using both Spark and BigDL.
+  \item Run it on a single compute node with
+    {\color{mycolorcli}
+\begin{verbatim}
+make lenet5
+\end{verbatim}
+    }
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{BigDL: Lab 8}
+  \begin{itemize}
+  \item LeNet has been used for decades by USPS to recognize handwritten zip codes
+  \item Here is how LeNet model is built in BigDL:
+{\small
+    {\color{mycolorcode}
+\begin{verbatim}
+def build_model(class_num):
+    model = Sequential()
+    model.add(Reshape([1, 28, 28]))
+    model.add(SpatialConvolution(1, 6, 5, 5))
+    model.add(Tanh())
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+    model.add(Tanh())
+    model.add(SpatialConvolution(6, 12, 5, 5))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+    model.add(Reshape([12 * 4 * 4]))
+    model.add(Linear(12 * 4 * 4, 100))
+    model.add(Tanh())
+    model.add(Linear(100, class_num))
+    model.add(LogSoftMax())
+    return model
+\end{verbatim}
+    }
+}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{BigDL: Lab 8}
+  \begin{itemize}
+  \item MNIST data is loaded into RDD and is preprocessed in Spark before going into BigDL:
+{\small
+    {\color{mycolorcode}
+\begin{verbatim}
+train_data = get_mnist(sc, "train", options.dataPath)\
+     .map(lambda rec_tuple: (normalizer(rec_tuple[0],\
+      mnist.TRAIN_MEAN, mnist.TRAIN_STD), rec_tuple[1]))\
+     .map(lambda t: Sample.from_ndarray(t[0], t[1]))
+\end{verbatim}
+}
+}
+\end{itemize}
+\end{frame}
+

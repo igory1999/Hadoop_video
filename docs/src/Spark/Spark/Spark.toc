@@ -1,0 +1,45 @@
+\beamer@sectionintoc {1}{How to get this tutorial}{2}{0}{1}
+\beamer@sectionintoc {2}{How to login to midway}{3}{0}{2}
+\beamer@subsectionintoc {2}{1}{ssh}{3}{0}{2}
+\beamer@subsectionintoc {2}{2}{yubikey}{4}{0}{2}
+\beamer@subsectionintoc {2}{3}{ThinLinc}{5}{0}{2}
+\beamer@sectionintoc {3}{Introduction}{6}{0}{3}
+\beamer@sectionintoc {4}{RDD}{10}{0}{4}
+\beamer@subsectionintoc {4}{1}{Transformations}{11}{0}{4}
+\beamer@subsectionintoc {4}{2}{Actions}{12}{0}{4}
+\beamer@subsectionintoc {4}{3}{Lab 1}{13}{0}{4}
+\beamer@sectionintoc {5}{Shared variables}{14}{0}{5}
+\beamer@subsectionintoc {5}{1}{Lab 2}{15}{0}{5}
+\beamer@sectionintoc {6}{Spark SQL}{16}{0}{6}
+\beamer@subsectionintoc {6}{1}{Lab 1}{17}{0}{6}
+\beamer@subsubsectionintoc {6}{1}{1}{line\_count\_DF.py}{17}{0}{6}
+\beamer@subsectionintoc {6}{2}{Lab 3}{18}{0}{6}
+\beamer@subsubsectionintoc {6}{2}{1}{lab3.ipynb}{18}{0}{6}
+\beamer@subsectionintoc {6}{3}{Lab 4}{19}{0}{6}
+\beamer@subsubsectionintoc {6}{3}{1}{sql.py}{19}{0}{6}
+\beamer@subsubsectionintoc {6}{3}{2}{rdd2df.py}{20}{0}{6}
+\beamer@subsubsectionintoc {6}{3}{3}{files.py}{21}{0}{6}
+\beamer@subsubsectionintoc {6}{3}{4}{hive.py}{22}{0}{6}
+\beamer@subsubsectionintoc {6}{3}{5}{hive.sql}{23}{0}{6}
+\beamer@sectionintoc {7}{Machine Learning Library}{24}{0}{7}
+\beamer@subsubsectionintoc {7}{0}{1}{hive.sql}{24}{0}{7}
+\beamer@subsectionintoc {7}{1}{Lab 5}{25}{0}{7}
+\beamer@subsubsectionintoc {7}{1}{1}{Logistic Regression}{25}{0}{7}
+\beamer@subsubsectionintoc {7}{1}{2}{Perceptron}{27}{0}{7}
+\beamer@sectionintoc {8}{Streaming}{29}{0}{8}
+\beamer@subsectionintoc {8}{1}{Lab 6}{30}{0}{8}
+\beamer@subsubsectionintoc {8}{1}{1}{word\_count.py}{30}{0}{8}
+\beamer@subsubsectionintoc {8}{1}{2}{age.py}{32}{0}{8}
+\beamer@sectionintoc {9}{Spark on midway cluster}{34}{0}{9}
+\beamer@subsectionintoc {9}{1}{sinteractive}{34}{0}{9}
+\beamer@subsectionintoc {9}{2}{Lab7 sbatch}{35}{0}{9}
+\beamer@subsubsectionintoc {9}{2}{1}{Single node in batch}{35}{0}{9}
+\beamer@subsubsectionintoc {9}{2}{2}{Multiple nodes in batch}{37}{0}{9}
+\beamer@sectionintoc {10}{Spark on Hadoop cluster}{38}{0}{10}
+\beamer@subsectionintoc {10}{1}{Batch}{38}{0}{10}
+\beamer@subsectionintoc {10}{2}{Jupyter}{39}{0}{10}
+\beamer@sectionintoc {11}{BigDL}{41}{0}{11}
+\beamer@subsectionintoc {11}{1}{Lab 8}{42}{0}{11}
+\beamer@sectionintoc {12}{Conclusion}{45}{0}{12}
+\beamer@sectionintoc {13}{References}{46}{0}{13}
+\beamer@sectionintoc {14}{Appendix: tutorials on demand}{47}{0}{14}

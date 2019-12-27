@@ -1,0 +1,159 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage{default}
+
+\mode<presentation>
+%{ \usetheme{boxes} }
+
+
+\usetheme{Madrid}
+
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{tabulary}
+\usepackage{listings}
+\usepackage{verbatimbox}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{pgfpages}
+\usepackage{color}
+\usepackage{multicol}
+
+\pgfdeclareimage[height=1.0cm]{logo_rcc}{../../icons/logo_rcc.png}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+\newcommand{\RCCLogo}{
+\begin{textblock}{14}(1.5,1.5)
+  \pgfuseimage{logo_rcc}
+\end{textblock}
+}
+
+\pgfdeclareimage[height=1.0cm]{spark}{../../icons/spark.png}
+\newcommand{\SPARK}{
+\begin{textblock}{14}(107.5,1.5)
+  \pgfuseimage{spark}
+\end{textblock}
+}
+
+
+
+\definecolor{mycolorcli}{RGB}{53,154,26}
+\definecolor{mycolorcode}{RGB}{0,0,255}
+\definecolor{mycolordef}{RGB}{255,0,0}
+\definecolor{mycolorlink}{RGB}{184,4,255}
+
+\setcounter{tocdepth}{3}
+
+\title{\huge{Introduction}}
+\author{Igor Yakushin \\ \texttt{ivy2@uchicago.edu}}
+
+\definecolor{ChicagoMaroon}{RGB}{128,0,0}
+
+\setbeamercolor{title}{bg=ChicagoMaroon}
+
+\begin{document}
+
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamercolor{fcolor}{fg=white,bg=ChicagoMaroon}
+\setbeamertemplate{footline}{
+\begin{beamercolorbox}[ht=4ex,leftskip=1.4cm,rightskip=.3cm]{fcolor}
+\hrule
+\vspace{0.1cm}
+   \hfill \insertshortdate \hfill \insertframenumber/\inserttotalframenumber
+\end{beamercolorbox}
+}
+
+\setbeamercolor{frametitle}{bg=ChicagoMaroon,fg=white}
+
+\begin{frame}
+\SPARK
+\titlepage
+\end{frame}
+
+
+\section{Introduction}
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+  
+\begin{itemize}
+\item Apache Spark is a fast and general-purpose cluster computing system. 
+\item It provides high-level APIs in Java, Scala, Python and R
+\item Typically all the functionality is available in Scala and Java while APIs 
+  in other languages might be behind. For example, Spark's GraphX library is only available in Scala.
+\item It also supports a rich set of higher-level tools including Spark SQL for SQL 
+  and structured data processing, MLlib for machine learning, GraphX for graph processing, and Spark Streaming.
+\item Spark can run within Hadoop cluster and knows how to deal with various 
+  Hadoop components (like HDFS, Hive, HBase, etc) and data formats.
+\item Spark can also run on a standalone computer or a regular HPC cluster like midway.
+\item Spark can utilize multiple nodes and multiple CPU cores in a node.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+  
+  \begin{itemize}
+  \item Python API, {\color{mycolordef}pyspark}, can be used 
+    \begin{itemize} 
+    \item in batch mode 
+    \item interactively 
+      \begin{itemize}
+      \item in a python command prompt
+      \item in Jupyter notebook
+      \end{itemize}
+    \end{itemize}
+  \item While {\color{mycolordef}MLlib} - Spark's machine learning library -  has some Neural Network routines, for more advanced Deep Learning framework 
+    consider using Spark in combination with {\color{mycolordef}BigDL} library from Intel that knows how to work with Spark's RDDs
+  \end{itemize}  
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+  
+\begin{itemize}
+\item Spark was initially started by Matei Zaharia at UC Berkeley's AMPLab in 2009, and open sourced in 2010 under a BSD license.
+\item In 2013, the project was donated to the Apache Software Foundation and switched its license to Apache 2.0. 
+\item Michael Franklin, who co-founded and directed AMPLab when Spark was created, is now professor and chair at the Computer Science Department of the University of Chicago.
+\item The current version of Spark is 2.4.4. 
+\item The upcoming version 3.0.0 promises better integration with GPUs and deep learning frameworks, much faster performance
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+  
+\begin{itemize}
+\item Before Spark 2.0, the main abstraction of Spark was the {\color{mycolordef}R}esilient {\color{mycolordef}D}istributed {\color{mycolordef}D}ataset  - {\color{mycolordef}RDD}
+\item After Spark 2.0, RDD is replaced by {\color{mycolordef}DataFrame}
+\item RDDs are still supported
+\item It is recommended now to use {\color{mycolordef}DataFrames} instead of RDDs: 
+  \begin{itemize}
+  \item provides SQL interface to data - more convenient to program
+  \item much faster since a query optimization, similar the one used for SQL in RDBM, is applied to queries on DataFrames but not on RDDs
+  \end{itemize}
+\item We shall cover both since Spark is still in the state of transition. For example:
+  \begin{itemize}
+    \item There are two streaming libraries: 
+      \begin{itemize}
+      \item {\color{mycolordef}Structured Streaming}  - based on DataFrames, 
+      \item {\color{mycolordef}DStreams} - based on RDDs
+      \end{itemize}
+    \item There are two APIs to machine learning library: 
+      \begin{itemize}
+      \item the old one based on RDD is in a maintenance state - only bug fixes are applied to it but no new features are introduced; 
+      \item the new machine learning library based on DataFrames is still catching up with the functionality of the old library
+      \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+\end{document}
+

@@ -1,0 +1,129 @@
+\section{Streaming}
+\begin{frame}[fragile]
+\frametitle{Streaming}
+\begin{itemize}
+\item Streaming allows to process continuously arriving data
+\item There are two streaming interfaces in Spark:
+  \begin{itemize}
+  \item {\color{mycolordef}Structured Streaming} - DataFrame API
+  \item {\color{mycolordef}Spark Streaming (DStreams)} - RDD API
+  \end{itemize}
+\item We shall only consider Structured Streaming.
+\item Structured Streaming is a scalable and fault-tolerant stream processing engine built on the Spark SQL engine. 
+\item One can express streaming computation the same way one would express a batch computation on static data. 
+\item The Spark SQL engine will take care of running it incrementally and continuously and updating the final result as streaming data continues to arrive
+\item Structured Streaming can use as sources: files, Kafka, socket (for testing)
+\end{itemize}
+\end{frame}
+
+\subsection{Lab 6}
+\subsubsection{word\_count.py}
+\begin{frame}[fragile]
+\frametitle{Streaming: Lab 6: word\_count.py}
+{\small
+{\color{mycolorcode}
+\begin{verbatim}
+from pyspark.sql.functions import explode, split
+import sys
+port = int(sys.argv[1]); host = sys.argv[2]
+spark = SparkSession.builder.getOrCreate()
+lines = spark.readStream.format("socket") \
+    .option("host",host).option("port",port).load()
+words = lines.select(
+   explode(
+       split(lines.value, " ")
+   ).alias("word")
+)
+wordCounts = words.groupBy("word").count()
+query = wordCounts \
+    .writeStream \
+    .outputMode("complete") \
+    .format("console") \
+    .start()
+query.awaitTermination()
+\end{verbatim}
+}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Streaming: Lab 6: word\_count.py}
+\begin{itemize}
+\item Generate random port number from 9000 to 10000 and write the corresponding commands used below into the files 
+  {\color{mycolorcli}mync.sh} and {\color{mycolorcli}mystream.sh}.
+\item Open the second terminal on the same host and run {\color{mycolorcli}netcat} in it:
+{\color{mycolorcli}
+\begin{verbatim}
+source env.sh
+make nc
+\end{verbatim}
+}
+\item netcat will connect to {\color{mycolorcli}\verb|localhost:<port>|}
+\item In the first terminal, start pyspark streaming program:
+{\color{mycolorcli}
+\begin{verbatim}
+make word_count
+\end{verbatim}
+}
+\item Now pyspark listens to input on {\color{mycolorcli}\verb|localhost:<port>|}
+\item In the second terminal type some words. Once you hit {\color{mycolorcli}Enter}, 
+  all the words including the current ones are reprocessed by pyspark. 
+  Keep entering new lines and observe the output in the first terminal.
+\item To stop both processes, type {\color{mycolorcli}Ctrl+C} in the window with pyspark.
+\end{itemize}
+\end{frame}
+
+\subsubsection{age.py}
+\begin{frame}[fragile]
+\frametitle{Streaming: Lab 6: age.py}
+{\small
+{\color{mycolorcode}
+\begin{verbatim}
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType
+from pyspark.sql.functions import avg
+
+spark = SparkSession.builder.getOrCreate()
+
+userSchema = StructType().add("name", "string")\
+                         .add("age", "integer")
+csvDF = spark.readStream.option("sep", ";") \
+    .schema(userSchema).csv("input_csv")
+
+averageAge = csvDF.select(avg(csvDF.age))
+
+query = averageAge.writeStream.outputMode("complete")\
+                              .format("console").start()
+query.awaitTermination()
+\end{verbatim}
+}
+}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Streaming: Lab 6: age.py}
+\begin{itemize}
+\item In this lab data is processed as files are added into {\color{mycolorcli}\verb|input_csv|} directory
+\item First start pyspark by running
+{\color{mycolorcli}
+\begin{verbatim}
+make age
+\end{verbatim}
+}
+\item In the second terminal 
+{\color{mycolorcli}
+\begin{verbatim}
+mv tmp/1.csv input_csv/
+\end{verbatim}
+}
+\item Observe average age computed in the first terminal
+\item Next
+{\color{mycolorcli}
+\begin{verbatim}
+mv tmp/2.csv input_csv/
+\end{verbatim}
+}
+\item Notice: it is important to use {\color{mycolorcli}mv} because files for Spark Streaming are supposed to be immutable. {\color{mycolorcli}mv} simply renames a file instantaneously while 
+something like {\color{mycolorcli}cp} might take time. As a result Spark might process the first part of the file it notices and ignore the rest.
+\end{itemize}
+\end{frame}
+

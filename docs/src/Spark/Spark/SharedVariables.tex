@@ -1,0 +1,43 @@
+\section{Shared variables}
+\begin{frame}
+  \frametitle{Shared variables}
+  \begin{itemize}
+   \item Spark's second abstraction - {\color{mycolordef}shared variables}
+   \item By default variables are not shared between tasks
+   \item Two kinds of shared variables supported:
+    \begin{itemize}
+      \item {\color{mycolordef}Broadcast variables} - can be used to cache a value in memory on all nodes
+      \item {\color{mycolordef}Accumulators} - such as counters, sums; one can only ``increment'' those variables; can be used to store intermediate results of reduce operation
+    \end{itemize}	
+  \end{itemize} 
+\end{frame}
+
+\subsection{Lab 2}
+\begin{frame}[fragile]
+  \frametitle{Shared variables: Lab 2}
+Here we use pyspark interpreter:
+{\small
+{\color{mycolorcode}
+\begin{verbatim}
+  lines = sc.textFile("README.md")
+  l1 = lines.map(lambda line: len(line.split()))
+  l1.reduce(lambda a,b: a if (a>b) else b)
+
+  pairs = lines.flatMap(lambda s: s.split()).map(lambda w: (w,1))
+  result = pairs.reduceByKey(lambda a,b: a+b)
+  print("\n".join(map(lambda x: "{} -> {}".format(*x), 
+                      result.collect())))
+
+  distData = sc.parallelize(list(range(1000))
+
+  b = sc.broadcast(list(range(10)))
+  b.value
+
+  a = sc.accumulator(0)
+  sc.parallelize(list(range(5))).foreach(lambda x: a.add(x))
+  a.value
+\end{verbatim}
+}
+}
+
+\end{frame}
