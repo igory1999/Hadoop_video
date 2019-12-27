@@ -1,0 +1,109 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage{default}
+
+\mode<presentation>
+%{ \usetheme{boxes} }
+
+
+\usetheme{Madrid}
+
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{tabulary}
+\usepackage{listings}
+\usepackage{verbatimbox}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{pgfpages}
+\usepackage{color}
+\usepackage{multicol}
+
+\pgfdeclareimage[height=1.0cm]{spark}{../../icons/spark.png}
+\newcommand{\SPARK}{
+\begin{textblock}{14}(107.5,1.5)
+  \pgfuseimage{spark}
+\end{textblock}
+}
+
+
+
+\definecolor{mycolorcli}{RGB}{53,154,26}
+\definecolor{mycolorcode}{RGB}{0,0,255}
+\definecolor{mycolordef}{RGB}{255,0,0}
+\definecolor{mycolorlink}{RGB}{184,4,255}
+
+\setcounter{tocdepth}{3}
+
+\title{\huge{Shared variables}}
+\author{Igor Yakushin \\ \texttt{ivy2@uchicago.edu}}
+
+\definecolor{ChicagoMaroon}{RGB}{128,0,0}
+
+\setbeamercolor{title}{bg=ChicagoMaroon}
+
+\begin{document}
+
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamercolor{fcolor}{fg=white,bg=ChicagoMaroon}
+\setbeamertemplate{footline}{
+\begin{beamercolorbox}[ht=4ex,leftskip=1.4cm,rightskip=.3cm]{fcolor}
+\hrule
+\vspace{0.1cm}
+   \hfill \insertshortdate \hfill \insertframenumber/\inserttotalframenumber
+\end{beamercolorbox}
+}
+
+\setbeamercolor{frametitle}{bg=ChicagoMaroon,fg=white}
+
+\begin{frame}
+\SPARK
+\titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Shared variables}
+  \begin{itemize}
+   \item Spark's second abstraction - {\color{mycolordef}shared variables}
+   \item By default variables are not shared between tasks
+   \item Two kinds of shared variables supported:
+    \begin{itemize}
+      \item {\color{mycolordef}Broadcast variables} - can be used to cache a value in memory on all nodes
+      \item {\color{mycolordef}Accumulators} - such as counters, sums;
+        one can only ``increment'' those variables; can be used to store intermediate results of reduce operation
+    \end{itemize}	
+  \end{itemize} 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Shared variables}
+{\small
+{\color{mycolorcode}
+\begin{verbatim}
+  lines = sc.textFile("README.md")
+  l1 = lines.map(lambda line: len(line.split()))
+  l1.reduce(lambda a,b: a if (a>b) else b)
+
+  pairs = lines.flatMap(lambda s: s.split()).map(lambda w: (w,1))
+  result = pairs.reduceByKey(lambda a,b: a+b)
+  print("\n".join(map(lambda x: "{} -> {}".format(*x), 
+                      result.collect())))
+
+  distData = sc.parallelize(list(range(1000))
+
+  b = sc.broadcast(list(range(10)))
+  b.value
+
+  a = sc.accumulator(0)
+  sc.parallelize(list(range(5))).foreach(lambda x: a.add(x))
+  a.value
+\end{verbatim}
+}
+}
+
+\end{frame}
+\end{document}
