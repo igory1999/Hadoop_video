@@ -1,0 +1,19 @@
+\frametitle{HBase shell}
+{\color{mycolorcli}
+  \begin{lstlisting}[frame=single, basicstyle=\tiny]
+> get 'CustomerContactInfo', '00001'
+COLUMN                CELL
+ContactInfo:EA        timestamp=1471196578957, value=John.Smith@xyz.com
+ContactInfo:SA        timestamp=1471196578988, value=1 Hadoop Lane, NY 11111
+CustomerName:FN       timestamp=1471196578805, value=John
+CustomerName:LN       timestamp=1471196578859, value=Smith
+CustomerName:MN       timestamp=1471197270641, value=Timothy
+> get 'CustomerContactInfo', '00001', {COLUMN => 'CustomerName:MN'}
+COLUMN                CELL
+CustomerName:MN       timestamp=1471197270641, value=Timothy
+> disable 'CustomerContactInfo'
+> drop 'CustomerContactInfo'
+> quit
+  \end{lstlisting}
+}
+

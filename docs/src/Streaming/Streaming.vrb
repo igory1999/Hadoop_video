@@ -1,0 +1,16 @@
+\frametitle{MapReduce: using streaming}
+
+ \begin{itemize}
+   \item To run a job:
+{\color{mycolorcli}
+  \begin{lstlisting}[frame=single, basicstyle=\tiny]
+hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
+       -input /user/$USER/wordcount/README \
+       -output /user/$USER/wordcount/streaming-out-py \
+       -file mapper.py -mapper mapper.py -file reducer.py -reducer reducer.py
+ \end{lstlisting}
+}
+
+ \end{itemize}
+
+

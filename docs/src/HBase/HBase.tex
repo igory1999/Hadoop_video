@@ -62,10 +62,9 @@
 \end{frame}
 
 
-\section{HBase}
-\subsection{Introduction}
+\section{Introduction}
 \begin{frame}
-  \frametitle{HBase}
+  \frametitle{Introduction}
   \begin{itemize}
   \item {\color{mycolordef}\textbf{H}}adoop data{\color{mycolordef}\textbf{Base}}
   \item Consists of tables
@@ -79,8 +78,9 @@
   \end{itemize}
 \end{frame}
 
+\section{Column families, columns, multiple versions}
 \begin{frame}[fragile]
- \frametitle{HBase}
+ \frametitle{Column families, columns, multiple versions}
  {\color{mycolorcode}
  \begin{verbnobox}[\tiny]
   Row Key     Column Family: {Column Qualifier:Version:Value}
@@ -98,15 +98,16 @@
  }
  \begin{itemize}
  \item Internally HBase table is stored in {\color{mycolordef}HFiles} - different set of files for different column families
- \item HFiles for the same column family are periodically merged together or split and distributed among the nodes to maintain high performance and fault-taulerance
+ \item HFiles for the same column family are periodically merged together or split and
+   distributed among the nodes to maintain high performance and fault-taulerance
  \item On top of HDFS
  \item One can specify how many latest versions of data to keep in HBase table or to query versions in a particular date-time range
 \end{itemize}
 \end{frame}
 
-\subsection{Usage: shell}
+\section{HBase shell}
 \begin{frame}[fragile]
- \frametitle{HBase: shell, create, put, list, describe}
+ \frametitle{HBase shell}
 {\color{mycolorcli}
   \begin{lstlisting}[frame=single, basicstyle=\tiny]
 $ hbase shell
@@ -139,7 +140,7 @@ IN_MEMORY => 'false', BLOCKCACHE => 'true'}
 \end{frame}
 
 \begin{frame}[fragile]
- \frametitle{HBase: alter, scan, VERSIONS}
+ \frametitle{HBase shell}
 {\color{mycolorcli}
   \begin{lstlisting}[frame=single, basicstyle=\tiny]
 
@@ -173,7 +174,7 @@ ROW      COLUMN+CELL
 \end{frame}
 
 \begin{frame}[fragile]
- \frametitle{HBase: get, disable, drop, quit}
+ \frametitle{HBase shell}
 {\color{mycolorcli}
   \begin{lstlisting}[frame=single, basicstyle=\tiny]
 > get 'CustomerContactInfo', '00001'
@@ -195,16 +196,37 @@ CustomerName:MN       timestamp=1471197270641, value=Timothy
 \end{frame}
 
 
-\subsection{Other clients}
+\section{Clients}
 \begin{frame}
  \frametitle{HBase: clients}
- Besides hbase shell, one can use HBase with
+ Besides HBase shell, one can use HBase with
  \begin{itemize}
-  \item MapReduce
+  \item MapReduce JavaAPI
   \item Hive
   \item Pig
   \item Spark
   \item Impala
+  \end{itemize}
+\end{frame}
+
+
+\section{HBase applications}
+\begin{frame}
+  \frametitle{HBase applications}
+  \begin{itemize}
+    \item For what applications is HBase good for?
+      \begin{itemize}
+      \item Huge amount of (semi-)structured data: most records have the same columns but some might have extra columns
+      \item The need for random and real time access to data
+      \item The need to store multiple versions of records
+      \item No support for relational features
+      \item No support for transactions
+      \end{itemize}
+    \item Example applications:
+      \begin{itemize}
+      \item  Mozilla stores crash data in HBase
+      \item Facebook uses HBase to store real-time messages
+      \end{itemize}
   \end{itemize}
 \end{frame}
 

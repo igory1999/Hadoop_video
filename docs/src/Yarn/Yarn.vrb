@@ -1,0 +1,24 @@
+\frametitle{YARN}
+  \begin{itemize}
+  \item The cluster becomes particularly busy and unusable at the end of each semester when students are finishing their final projects
+  \item To kill running job, use
+    {\color{mycolorcli}
+\begin{verbatim}
+  yarn application -kill <Application ID>
+\end{verbatim}
+    }
+  \item You can find application id using one of the previous commands
+  \item To get logs for a particular application:
+    {\color{mycolorcli}
+\begin{verbatim}
+  yarn logs -applicationId <Application ID>
+\end{verbatim}
+    }
+  \item When you launch a batch job under Yarn, it runs in shell foreground, the shell will not retun until the job is finished.
+  \item To run it in a background, use standard UNIX way (see my Linux tutorial for details). For example:
+    {\color{mycolorcli}
+\begin{verbatim}
+nohup pyspark myscript.py > log.txt 2>&1 &
+\end{verbatim}
+}
+  \end{itemize}
