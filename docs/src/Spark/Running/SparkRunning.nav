@@ -1,0 +1,37 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\beamer@sectionpages {1}{1}}
+\headcommand {\beamer@subsectionpages {1}{1}}
+\headcommand {\sectionentry {1}{Spark on midway cluster}{2}{Spark on midway cluster}{0}}
+\headcommand {\beamer@subsectionpages {2}{1}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{2}{sinteractive}}
+\headcommand {\slideentry {1}{1}{1}{2/2}{sinteractive}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@subsectionpages {2}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{3}{Lab7 sbatch}}
+\headcommand {\beamer@subsubsectionentry {0}{1}{2}{1}{3}{Single node in batch}}
+\headcommand {\slideentry {1}{2}{1}{3/3}{Lab7 sbatch}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\slideentry {1}{2}{2}{4/4}{Lab7 sbatch}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\beamer@subsubsectionentry {0}{1}{2}{2}{5}{Multiple nodes in batch}}
+\headcommand {\slideentry {1}{2}{3}{5/5}{Lab7 sbatch}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\beamer@sectionpages {2}{5}}
+\headcommand {\beamer@subsectionpages {3}{5}}
+\headcommand {\sectionentry {2}{Spark on Hadoop cluster}{6}{Spark on Hadoop cluster}{0}}
+\headcommand {\beamer@subsectionpages {6}{5}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{6}{Batch}}
+\headcommand {\slideentry {2}{1}{1}{6/6}{Batch}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\beamer@subsectionpages {6}{6}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{7}{Jupyter}}
+\headcommand {\slideentry {2}{2}{1}{7/7}{Jupyter}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\slideentry {2}{2}{2}{8/8}{Jupyter}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\beamer@partpages {1}{8}}
+\headcommand {\beamer@subsectionpages {7}{8}}
+\headcommand {\beamer@sectionpages {6}{8}}
+\headcommand {\beamer@documentpages {8}}
+\headcommand {\gdef \inserttotalframenumber {8}}

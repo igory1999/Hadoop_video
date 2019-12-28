@@ -1,0 +1,8 @@
+\beamer@sectionintoc {1}{Spark on midway cluster}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{sinteractive}{2}{0}{1}
+\beamer@subsectionintoc {1}{2}{Lab7 sbatch}{3}{0}{1}
+\beamer@subsubsectionintoc {1}{2}{1}{Single node in batch}{3}{0}{1}
+\beamer@subsubsectionintoc {1}{2}{2}{Multiple nodes in batch}{5}{0}{1}
+\beamer@sectionintoc {2}{Spark on Hadoop cluster}{6}{0}{2}
+\beamer@subsectionintoc {2}{1}{Batch}{6}{0}{2}
+\beamer@subsectionintoc {2}{2}{Jupyter}{7}{0}{2}
