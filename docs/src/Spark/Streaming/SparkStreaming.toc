@@ -1,4 +1,0 @@
-\beamer@sectionintoc {1}{Streaming}{2}{0}{1}
-\beamer@subsectionintoc {1}{1}{Lab 6}{3}{0}{1}
-\beamer@subsubsectionintoc {1}{1}{1}{word\_count.py}{3}{0}{1}
-\beamer@subsubsectionintoc {1}{1}{2}{age.py}{5}{0}{1}

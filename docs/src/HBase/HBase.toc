@@ -1,5 +1,0 @@
-\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
-\beamer@sectionintoc {2}{Column families, columns, multiple versions}{3}{0}{2}
-\beamer@sectionintoc {3}{HBase shell}{4}{0}{3}
-\beamer@sectionintoc {4}{Clients}{7}{0}{4}
-\beamer@sectionintoc {5}{HBase applications}{8}{0}{5}

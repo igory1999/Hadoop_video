@@ -1,9 +1,0 @@
-\frametitle{Spark on Hadoop cluster: jupyter}
-
-Two ways to shut down a jupyter notebook:
-
-\begin{itemize}
-\item When inside the notebook: \verb|File -> Close and Halt|
-\item When in the file browser outside of the notebook: select ``Running'' tab and press the yellow ``Shutdown'' button near
-  any running notebook.
-\end{itemize}

@@ -1,0 +1,135 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage{default}
+
+\mode<presentation>
+%{ \usetheme{boxes} }
+
+
+\usetheme{Madrid}
+
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{tabulary}
+\usepackage{listings}
+\usepackage{verbatimbox}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{pgfpages}
+\usepackage{color}
+
+\pgfdeclareimage[height=1.0cm]{logo_rcc}{../icons/logo_rcc.png}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+\newcommand{\RCCLogo}{
+\begin{textblock}{14}(1.5,1.5)
+  \pgfuseimage{logo_rcc}
+\end{textblock}
+}
+
+\definecolor{mycolorcli}{RGB}{53,154,26}
+\definecolor{mycolorcode}{RGB}{0,0,255}
+\definecolor{mycolordef}{RGB}{255,0,0}
+\definecolor{mycolorlink}{RGB}{184,4,255}
+
+\title{\huge{RCC Hadoop Cluster}}
+\author{Igor Yakushin \\ \texttt{ivy2@uchicago.edu}}
+\date{}
+
+\definecolor{ChicagoMaroon}{RGB}{128,0,0}
+
+\setbeamercolor{title}{bg=ChicagoMaroon}
+
+\begin{document}
+
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamercolor{fcolor}{fg=white,bg=ChicagoMaroon}
+\setbeamertemplate{footline}{
+\begin{beamercolorbox}[ht=4ex,leftskip=1.4cm,rightskip=.3cm]{fcolor}
+\hrule
+\vspace{0.1cm}
+   \hfill \insertshortdate \hfill \insertframenumber/\inserttotalframenumber
+\end{beamercolorbox}
+}
+
+\setbeamercolor{frametitle}{bg=ChicagoMaroon,fg=white}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+
+\section{RCC Hadoop cluster}
+\begin{frame}
+  \frametitle{RCC Hadoop cluster}
+  \begin{itemize}
+  \item RCC Hadoop cluster was paid for by MSCA program in 2017 and is managed by Research Computing Center
+  \item Currently it consists of 3 management nodes, 6 data nodes, the rack and 10G switch.
+  \item On the internal network the corresponding host names are {\color{mycolorcli}md01-3}, {\color{mycolorcli}hd01-6}
+  \item Originally there were 4 data nodes, 2 more were added in 2019
+  \item The total cost of the cluster was about \$100k
+  \item About \$5k per year is paid for Cloudera software support
+  \item One of the management nodes also serves as a login node for users
+  \item The login node's hostname on the internal network is {\color{mycolorcli}md01}, that's what you see when you log into it,
+    and on the UChicago network it is {\color{mycolorcli}hadoop.rcc.uchicago.edu} - you use this address for ssh, jupyter hub, Hue
+  \end{itemize} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{RCC Hadoop cluster}
+  \begin{itemize}
+  \item Each management node has 256G of RAM, two mirrored 300G SSDs for OS, 24 CPU cores
+  \item Each data node has 256G of RAM, two mirrored 300G SSDs for OS, 24 CPU cores, 14 4T HDDs that are part of HDFS
+  \item The total HDFS storage that is built on top of $6*14$ 4T disks spread accross data nodes is 300T
+  \item Hadoop software consists of many different services running on management and data nodes.
+  \item As a user, you only interact directly with a login node and submit a job to the cluster using YARN scheduler
+  \item The actual computation is spread by YARN over data nodes in a way transparent to the user.
+  \item The cluster is currently running Cloudera 6.3 distribution
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{RCC Hadoop cluster}
+  \begin{itemize}
+  \item The nodes are connected to each other with 10G ethernet network
+  \item Each node is running CentOS 7.6 distribution of Linux. This is slightly different from Scientific Linux 7.4 used on midway
+    but for a user there is very little difference: all the same commands should work on both systems
+  \item The only thing to be careful about: if you build a binary on one cluster it might not necessarily run on the other cluster
+    because the libraries that are loaded at run time might not be available or might be of incompatible version.
+  \item Same applies to python: despite the fact that python programs are text files and are not explicitly compiled by a user,
+    under the hood, when you install a python package on your account, sometimes some compilation might happen.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{RCC Hadoop cluster}
+  \begin{itemize}
+  \item Besides HDFS and the local file system on which OS is installed, the same GPFS file systems as on midway are mounted on each node:
+    \begin{itemize}
+    \item {\color{mycolorcli}/home}
+    \item {\color{mycolorcli}/project2}
+    \item {\color{mycolorcli}/scratch/midway2}
+    \item {\color{mycolorcli}/software}
+    \end{itemize}
+  \item In particular, when you login, you get into the same home file system as on midway. Midway, however, does not have access to HDFS.
+  \item So, if you need to copy data between GPFS and HDFS, do it on Hadoop cluster using HDFS commands
+  \item Hadoop cluster is only visible on UChicago network. When you are off-campus, you need to use VPN to access it.
+  \item By default, Hadoop programs like Spark, can access data in HDFS only.
+    If you also want Hadoop programs to access data on GPFS file systems,
+    you need to do
+    {\color{mycolorcli}chmod o+x \$HOME}
+    since some of the Hadoop daemons, like YARN, are not owned by the user but need
+    some extra permissions to {\color{mycolorcli}\$HOME} when using GPFS.
+  \end{itemize}
+\end{frame}
+
+\end{document}
+
+

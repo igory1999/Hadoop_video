@@ -1,4 +1,0 @@
-Talk about GPFS, what file systems are available from Hadoop
-You need to do
-chmod u+x
-to access files from GPFS
