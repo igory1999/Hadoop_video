@@ -61,9 +61,7 @@
 \titlepage
 \end{frame}
 
-
-\section{Pig}
-\subsection{Introduction}
+\section{Introduction}
 \begin{frame}[fragile]
  \frametitle{Pig: introduction}
  \begin{itemize}
@@ -75,8 +73,7 @@
  \end{itemize}
 \end{frame}
 
-
-\subsection{How to run}
+\section{How to run}
 \begin{frame}[fragile]
  \frametitle{Pig: how to run}
  Pig programs can run in three ways: 
@@ -107,17 +104,86 @@
 \end{frame}
 
 
-\subsection{Examples}
+\section{Example 1}
 \begin{frame}[fragile]
- \frametitle{Pig: examples}
+ \frametitle{Example 1}
 {\color{mycolorcode}
   \begin{lstlisting}[frame=single, basicstyle=\tiny]
-records = LOAD 'pig/words.csv' USING PigStorage(',') AS (W, N:int);
-mrecs = GROUP records ALL;
-tot = FOREACH mrecs GENERATE SUM(records.N);
-DUMP tot;
-  \end{lstlisting}
+-- Reading records from a simple csv file,
+-- where records are separated by ',', into a Pig relation.
+-- If data type is not specified, Pig will figure it out.
+-- If it is, it might improve performance
 
+records = LOAD 'pig/test1.csv' USING PigStorage(',') AS (name, age:int, money:float);
+-- Print schema
+describe records;
+-- Dump relation to screen. Pig is translated into MapReduce and job is launched.
+dump records;
+
+-- Project only some columns from a relation
+projection = FOREACH records GENERATE name,money;
+describe projection;
+dump projection;
+
+-- If we want to apply some aggregation to a column, records must be grouped first
+mrecs = GROUP records ALL;
+describe mrecs;
+dump mrecs;
+
+tot = FOREACH mrecs GENERATE SUM(records.money);
+dump tot;
+
+records1 = order records by age asc;
+dump records1;
+
+records2 = union records, records1;
+dump records2;
+  \end{lstlisting}
+}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Example 1}
+{\color{mycolorcode}
+  \begin{lstlisting}[frame=single, basicstyle=\tiny]
+--Finding average money per age group and measuring the size of the age group
+
+agegroups = GROUP records by age;
+describe agegroups;
+dump agegroups;
+
+avgmoneyperage = FOREACH agegroups GENERATE group, AVG(records.money);
+describe avgmoneyperage;
+dump avgmoneyperage;
+
+countagegroup = FOREACH agegroups GENERATE group, COUNT(records);
+dump countagegroup;
+
+--Select only 3 records
+records3 = limit records 3;
+dump records3;
+
+--Filter records by some condition
+records4 = filter records by age > 20;
+dump records4;
+
+-- Derive a new column
+records5 = foreach records generate name, money/age as mpa;
+describe records5;
+dump records5;
+
+-- Inner join by name
+records6 = join records by name, records5 by name;
+describe records6;
+dump records6;    
+  \end{lstlisting}
+}
+\end{frame}
+
+\section{Example 2}
+\begin{frame}[fragile]
+ \frametitle{Example 2}
+{\color{mycolorcode}
   \begin{lstlisting}[frame=single, basicstyle=\tiny]
 in = load 'pig/mary.txt' as (line);
 -- TOKENIZE splits the line into a field for each word.
@@ -129,19 +195,8 @@ grpd = group words by word;
 cntd = foreach grpd generate group, COUNT(words);
 store cntd into 'cntd.out';
   \end{lstlisting}
-
-  \begin{lstlisting}[frame=single, basicstyle=\tiny]
-records = LOAD 'words.csv' USING PigStorage(',') AS (W, N:int);
-r1 = filter records by N < 10;
-dump r1;
-r2 = foreach r1 generate N*N as N2, W;
-describe r2;
-r3 = join r1 by W, r2 by W;
-  \end{lstlisting}
 }
-
-
 \end{frame}
-
+    
 
 \end{document}
