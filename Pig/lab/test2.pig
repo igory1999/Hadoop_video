@@ -16,4 +16,4 @@ cntd = foreach grpd generate group, COUNT(words);
 
 -- Store the results
 
-store cntd into 'cntd.out';
+store cntd into 'pig/cntd.out';
