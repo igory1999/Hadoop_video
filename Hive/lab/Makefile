@@ -8,4 +8,4 @@ batch:
 sql:
 	hive --database ${USER} -e 'select * from t1 limit 5;'
 clean:
-	rm -f commands commands.sql *.txt *~
+	rm -f commands commands.sql *.txt *~ *.log
