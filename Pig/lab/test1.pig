@@ -20,6 +20,12 @@ dump mrecs;
 tot = FOREACH mrecs GENERATE SUM(records.money);
 dump tot;
 
+records1 = order records by age asc;
+dump records1;
+
+records2 = union records, records1;
+dump records2;
+
 --Suppose we want to find average money per age group and measure the size of the age group
 
 agegroups = GROUP records by age;
