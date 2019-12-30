@@ -4,7 +4,7 @@ import sys
 try:
     inputFile = sys.argv[1]
 except:
-    print("Usage: spark-submit line_count.py InputTextFile 1>out 2>err")
+    print("Usage: spark-submit line_count_RDD.py InputTextFile 1>out 2>err")
     sys.exit(1)
 
 conf = SparkConf()
