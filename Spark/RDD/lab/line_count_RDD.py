@@ -4,11 +4,8 @@ import sys
 try:
     inputFile = sys.argv[1]
 except:
-    print("Usage: spark-submit --master local[4] --name 'Line counting example' line_count.py <text file> 1>out 2>err")
+    print("Usage: spark-submit line_count.py InputTextFile 1>out 2>err")
     sys.exit(1)
-
-
-# conf = SparkConf().setAppName(appName).setMaster(master)
 
 conf = SparkConf()
 sc = SparkContext(conf=conf)
