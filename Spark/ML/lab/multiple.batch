@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH --job-name=multiple
+#SBATCH --exclusive
+#SBATCH --nodes=2
+#SBATCH --time=10
+#SBATCH --output=multiple_%j.out
+#SBATCH --error=multiple_%j.err
+#SBATCH --partition=broadwl
+####SBATCH --account=rcc-guest
+
+module load spark/2.3.0
+
+start-spark-slurm.sh
+
+export MASTER=spark://$HOSTNAME:7077
+spark-submit --master $MASTER perceptron.py
+
+stop-spark-slurm.sh

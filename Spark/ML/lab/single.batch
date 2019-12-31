@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#SBATCH --job-name=single
+#SBATCH --exclusive
+#SBATCH --nodes=1
+#SBATCH --time=10
+#SBATCH --partition=broadwl
+#SBATCH --output=single_%j.out
+#SBATCH --error=single_%j.err
+####SBATCH --account=msca
+
+source /project2/msca/ivy2/software2/etc/setup.sh
+
+export MASTER="local[*]"
+spark-submit --master $MASTER perceptron.py
