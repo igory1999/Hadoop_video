@@ -5,7 +5,7 @@ check_slurm:
 multiple:
 	sbatch multiple.batch
 hadoop:
-	nohup spark2-submit --master yarn perceptron.py 1>hadoop.out 2>hadoop.err &
+	nohup spark-submit --master yarn perceptron.py 1>hadoop.out 2>hadoop.err &
 check_hadoop:
 	yarn application -list 2>/dev/null | perl -ne 'print if(/${USER}/)'
 clean:

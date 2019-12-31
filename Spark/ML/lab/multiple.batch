@@ -7,9 +7,9 @@
 #SBATCH --output=multiple_%j.out
 #SBATCH --error=multiple_%j.err
 #SBATCH --partition=broadwl
-####SBATCH --account=rcc-guest
+####SBATCH --account=mscagpu
 
-module load spark/2.3.0
+source /project2/msca/ivy2/software2/etc/setup.sh
 
 start-spark-slurm.sh
 
