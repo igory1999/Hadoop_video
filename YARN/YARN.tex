@@ -66,7 +66,7 @@
   \frametitle{YARN}
   \begin{itemize}
   \item You have already seen how to execute programs written in Java, PySpark, Hive, HBase, Pig.
-  \item When you execute any program in Hadoop cluster, it is queued by Yarn resource manager
+  \item When you execute any program in Hadoop cluster, it is queued by YARN resource manager
   \item You can examine what is running or queued on the Hadoop cluster from a command line
     with {\color{mycolorcli}\verb|yarn application --list|}:
     {\fontsize{4}{6}
@@ -164,7 +164,7 @@ Queue(s) VCores: 0 available, 176 allocated, 278 pending, 5 reserved
   yarn logs -applicationId <Application ID>
 \end{verbatim}
     }
-  \item When you launch a batch job under Yarn, it runs in shell foreground, the shell will not retun until the job is finished.
+  \item When you launch a batch job under YARN, it runs in shell foreground, the shell will not retun until the job is finished.
   \item To run it in a background, use standard UNIX way (see my Linux tutorial for details). For example:
     {\color{mycolorcli}
 \begin{verbatim}

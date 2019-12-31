@@ -1,4 +1,4 @@
-name=Yarn
+name=YARN
 
 all: build view
 

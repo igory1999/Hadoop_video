@@ -7,7 +7,7 @@ clean:
 	cd Pig; make clean
 	cd JavaAPI; make clean
 	cd Streaming; make clean
-	cd Yarn; make clean
+	cd YARN; make clean
 	cd Hue; make clean
 	cd HBase; make clean
 	cd RCC_Hadoop_Cluster; make clean
