@@ -168,7 +168,7 @@ Queue(s) VCores: 0 available, 176 allocated, 278 pending, 5 reserved
   \item To run it in a background, use standard UNIX way (see my Linux tutorial for details). For example:
     {\color{mycolorcli}
 \begin{verbatim}
-nohup pyspark myscript.py > log.txt 2>&1 &
+nohup spark-submit myscript.py > out.log 2> error.log &
 \end{verbatim}        
 } 
   \end{itemize}
