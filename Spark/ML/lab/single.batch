@@ -7,7 +7,7 @@
 #SBATCH --partition=broadwl
 #SBATCH --output=single_%j.out
 #SBATCH --error=single_%j.err
-####SBATCH --account=msca
+####SBATCH --account=mscagpu
 
 source /project2/msca/ivy2/software2/etc/setup.sh
 
