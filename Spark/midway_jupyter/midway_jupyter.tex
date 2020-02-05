@@ -1,0 +1,231 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage{default}
+
+\mode<presentation>
+%{ \usetheme{boxes} }
+
+
+\usetheme{Madrid}
+
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{tabulary}
+\usepackage{listings}
+\usepackage{verbatimbox}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{pgfpages}
+\usepackage{color}
+\usepackage{multicol}
+
+\pgfdeclareimage[height=1.0cm]{logo_rcc}{../../icons/logo_rcc.png}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+\newcommand{\RCCLogo}{
+\begin{textblock}{14}(1.5,1.5)
+  \pgfuseimage{logo_rcc}
+\end{textblock}
+}
+
+\pgfdeclareimage[height=1.0cm]{spark}{../../icons/spark.png}
+\newcommand{\SPARK}{
+\begin{textblock}{14}(107.5,1.5)
+  \pgfuseimage{spark}
+\end{textblock}
+}
+
+\definecolor{mycolorcli}{RGB}{53,154,26}
+\definecolor{mycolorcode}{RGB}{0,0,255}
+\definecolor{mycolordef}{RGB}{255,0,0}
+\definecolor{mycolorlink}{RGB}{184,4,255}
+
+\setcounter{tocdepth}{3}
+
+\title{\huge{How to run Spark in Jupyter notebook on laptop and midway login and compute nodes}}
+\author{Igor Yakushin \\ \texttt{ivy2@uchicago.edu}}
+\date{}
+
+\definecolor{ChicagoMaroon}{RGB}{128,0,0}
+
+\setbeamercolor{title}{bg=ChicagoMaroon}
+
+\begin{document}
+
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamercolor{fcolor}{fg=white,bg=ChicagoMaroon}
+\setbeamertemplate{footline}{
+\begin{beamercolorbox}[ht=4ex,leftskip=1.4cm,rightskip=.3cm]{fcolor}
+\hrule
+\vspace{0.1cm}
+   \hfill \insertshortdate \hfill \insertframenumber/\inserttotalframenumber
+\end{beamercolorbox}
+}
+
+\setbeamercolor{frametitle}{bg=ChicagoMaroon,fg=white}
+
+\begin{frame}
+\SPARK
+\titlepage
+\end{frame}
+
+
+\section{Laptop}
+
+\begin{frame}[fragile]
+  \frametitle{Laptop}
+  
+\begin{itemize}
+\item Assuming that you have installed latest java 1.8.x, Anaconda3, spark 2.4.4 on your laptop and they are in your path,
+  to run spark in jupyter notebook do in a terminal
+  {\tiny
+    {\color{mycolorcli}
+\begin{verbatim}
+PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS="notebook" pyspark
+\end{verbatim}
+    }
+  }
+then in jupyter select \verb|New -> Python 3|.
+
+\item On Mac and Linux you can check if you are using correct versions of java, python, spark by using {\color{mycolorcli}\verb|which|}
+  {\small
+    {\color{mycolorcli}
+\begin{verbatim}
+which python
+which java
+which pyspark
+\end{verbatim}
+    }
+  }
+  and observe what paths are returned. For example, on my laptop the above commands return:
+  {\small
+    {\color{mycolorcli}
+\begin{verbatim}
+/usr/local/Anaconda3-2019.07/bin/python
+/usr/local/jdk1.8.0_212/bin/java
+/usr/local/spark-2.4.4-bin-hadoop2.7/bin/pyspark
+\end{verbatim}
+    }
+  }
+\item I believe, the corresponding command on Windows is {\color{mycolorcli}\verb|where|}
+\end{itemize}
+
+\end{frame}
+
+
+\section{Remote Linux system}
+\begin{frame}[fragile]
+  \frametitle{Remote Linux system}
+  
+  \begin{itemize}
+  \item Suppose you want to run jupyter on midway or some other remote Linux system.
+  \item Once you set your environment, for example by loading spark module,
+    you can do the same command as on your laptop provided that your ssh client does X-forwarding.
+  \item However, it would be slow because the web browser would be running on the remote system and the corresponding graphics would be transmitted
+    via network.
+  \item A better way would be to start a web server on the remote system and then connect the browser running on your laptop to the corresponding
+    URL. The command from the previous slide is modified as follows:
+    {\tiny
+      {\color{mycolorcli}
+\begin{verbatim}
+PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS="notebook --no-browser --ip=<host>" pyspark
+\end{verbatim}
+      }
+    }
+    where {\color{mycolorcli}\verb|<host>|} is the hostname or ip address of the remote system.
+  \item The above command would return you a URL to which you point the browser running on your laptop.
+  \end{itemize}
+
+\end{frame}
+
+\section{midway login nodes}
+\begin{frame}[fragile]
+  \frametitle{midway login nodes}
+  
+  \begin{itemize}
+  \item The command from the previous slide can be used to run spark in a jupyter notebook on midway login node.
+  \item Make sure to provide the correct hostname.
+  \item There are two login nodes on midway: {\color{mycolorcli}\verb|midway2-login1.rcc.uchicago.edu|} and
+    {\color{mycolorcli}\verb|midway2-login2.rcc.uchicago.edu|}
+  \item When you ssh to {\color{mycolorcli}\verb|midway2.rcc.uchicago.edu|}, the load balancer puts you on one of them.
+  \item However, it is not recommended to run anything heavy on login nodes. They exist for preparing and submitting
+    batch jobs. They are shared by several thousand users and it is important not to overload them with computations.
+  \item There is a script running on login nodes that would kill all the process of the heaviest user once the load
+    on a node exceeds certain threshold.
+  \item The best way to run spark on midway is to use compute nodes. There are about 500 of them on midway.
+  \end{itemize}
+
+\end{frame}
+
+\section{midway compute nodes}
+\begin{frame}[fragile]
+  \frametitle{midway compute nodes}
+  
+  \begin{itemize}
+  \item To run jupyter notebook on a compute node, you need to use VPN or be on campus, since compute nodes are only visible on UChicago network
+    and you cannot connect to the URL returned by jupyter running on the compute node from the outside of UChicago network.
+  \item ssh to login node: {\color{mycolorcli}\verb|ssh <username>@midway2.rcc.uchicago.edu|}
+  \item Ask the scheduler for resources. For example, if you want to use all CPU cores (28) and all the memory (64G) in one node of
+    broadwl partition for 3 hours:
+    {\color{mycolorcli}
+      {\tiny
+\begin{verbatim}
+sinteractive -p broadwl --exclusive --time=03:00:00 --nodes=1
+\end{verbatim}
+      }
+    }
+  \item Note, if the node is available, you might get it within couple minutes. If it is not available, sinteractive would hang until there is
+    an available node
+  \item To check how busy a particular partition is:
+    {\color{mycolorcli}
+      {\tiny
+\begin{verbatim}
+sinfo -p broadwl
+\end{verbatim}
+      }
+    }
+    Look if there are any {\color{mycolorcli}idle} nodes.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{midway compute nodes}
+  
+  \begin{itemize}
+  \item When you get a node, you are not sharing it with anybody. However, once you run out of the requested time, you are kicked out of
+    the compute node even if the whole cluster is idle. So make sure to save your work periodically and ask for enough time. However, the more resources you ask for, the more time
+    you might spend waiting in queue.
+  \item Once you are on the compute node, you need to figure out its IP address since node name is not known outside of RCC cluster.
+    The node's IP address is in the form {\color{mycolorcli}\verb|10.x.x.x|}. To find it, use {\color{mycolorcli}\verb|hostname -i|}.
+  \item After that execute the same command as on login node but use IP address instead of hostname.
+  \end{itemize}
+\end{frame}
+
+\section{Script}
+\begin{frame}[fragile]
+  \frametitle{script}
+
+  \begin{itemize}  
+  \item To make life easier, I have written a script that you can use both on login and compute nodes. Execute on the node where you want to run spark in jupyter 
+    {\color{mycolorcli}
+      {\tiny
+\begin{verbatim}
+source /project2/msca/ivy2/software2/etc/setup.sh
+\end{verbatim}
+      }
+    }
+  \item The script loads Anaconda3, java 1.8, spark 2.4.4 and sets couple aliases.
+  \item When you want to run spark in jupyter notebook on login node, execute {\color{mycolorcli}\verb|jnls|}.
+  \item When you want to run spark in jupyter notebook 
+    on compute node, execute {\color{mycolorcli}\verb|jncs|}
+  \item To see what each alias does, execute either {\color{mycolorcli}\verb|alias jnls|} on login node or {\color{mycolorcli}\verb|alias jncs|} on compute node.
+  \end{itemize}
+  \end{frame}
+
+    
+\end{document}
+
